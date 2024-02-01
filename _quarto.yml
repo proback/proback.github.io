@@ -6,11 +6,11 @@ website:
   title: "Paul Roback"
   navbar:
     left:
-      - href: index.qmd
+      - file: index.qmd
         text: Home
-      - courses.qmd
+      - file: courses.qmd
         text: Courses
-      - projects.qmd
+      - file: projects.qmd
         text: Projects
   page-footer:
     left: |

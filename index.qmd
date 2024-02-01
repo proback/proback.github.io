@@ -17,7 +17,7 @@ about:
 ## Paul Roback
 
 Professor of Statistics and Data Science <br>
-<a href="https://www.stolaf.edu/mscs/" target="_blank" rel="noopener">MSCS Department</a> @ [St. Olaf College](www.stolaf.edu)
+[MSCS Department](https://wp.stolaf.edu/mscs/) @ [St. Olaf College](https://wp.stolaf.edu/)
 
 ### Education
 

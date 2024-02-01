@@ -8,7 +8,10 @@ website:
     left:
       - href: index.qmd
         text: Home
+      - courses.qmd
+        text: Courses
       - projects.qmd
+        text: Projects
   page-footer:
     left: |
       &copy; Paul Roback, 2024<br>

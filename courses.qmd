@@ -1,0 +1,9 @@
+---
+title: "Courses"
+sidebar: false
+---
+
+### Fall 2024
+
+-   SDS 264: Data Science 2 [course website](https://proback.github.io/264_fall_2024/)
+-   SDS 172: Statistics 1

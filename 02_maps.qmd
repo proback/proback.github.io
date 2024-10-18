@@ -1,0 +1,301 @@
+---
+title: "Creating informative maps"
+sidebar: false
+format:
+  html: default
+editor_options: 
+  chunk_output_type: console
+---
+
+You can download this .qmd file from [here](https://github.com/proback/264_fall_2024/blob/main/02_maps.qmd).  Just hit the Download Raw File button.
+
+
+```{r}
+#| message: false
+#| warning: false
+
+# Initial packages required (we'll be adding more)
+library(tidyverse)
+library(mdsr)      # package associated with our MDSR book
+```
+
+
+
+### Choropleth Maps
+
+When you have specific regions (e.g. countries, states, counties, census tracts,...) and a value associated with each region. 
+
+A choropleth map will color the entire region according to the value. 
+For example, let's consider state vaccination data from March 2021.
+
+```{r}
+#| message: false
+#| warning: false
+
+vaccines <- read_csv("https://proback.github.io/264_fall_2024/Data/vacc_Mar21.csv") 
+
+vacc_mar13 <- vaccines |>
+  filter(Date =="2021-03-13") |>
+  select(State, Date, people_vaccinated_per100, share_doses_used, Governor)
+
+vacc_mar13
+```
+
+The tricky part of choropleth maps is getting the shapes (polygons) that make up the regions. This is really a pretty complex set of lines for R to draw! 
+
+Luckily, some maps are already created in R in the `maps` package.
+
+```{r}
+#| message: false
+#| warning: false
+
+library(maps)
+us_states <- map_data("state")
+head(us_states)
+
+us_states |>
+  ggplot(mapping = aes(x = long, y = lat,
+                          group = group)) + 
+  geom_polygon(fill = "white", color = "black")
+```
+
+
+```{r}
+vacc_mar13 <- vacc_mar13 |>
+  mutate(State = str_to_lower(State))
+
+vacc_mar13 <- vacc_mar13 |>
+  mutate(State = str_replace(State, " state", ""))
+```
+
+
+```{r}
+#| message: false
+#| warning: false
+
+library(viridis) # for color schemes
+vacc_mar13 |>
+  right_join(us_states, by = c("State" = "region")) |>
+  rename(region = State) |>
+  ggplot(mapping = aes(x = long, y = lat,
+                          group = group)) + 
+  geom_polygon(aes(fill = people_vaccinated_per100), color = "black") + 
+  labs(fill = "People Vaccinated\nper 100 pop.") +
+  coord_map() +  #<1>
+  theme_void() +  #<2>
+  scale_fill_viridis()  #<3>
+```
+
+1. This scales the longitude and latitude so that the shapes look correct.  coord_quickmap() can also work here - it's less exact but faster.
+2. This theme can give you a really clean look
+3. You can change the fill scale for different color schemes.
+
+
+You can also use a categorical variable to color regions:
+
+```{r}
+vacc_mar13 |>
+  right_join(us_states, by = c("State" = "region")) |>
+  rename(region = State) |>
+  ggplot(mapping = aes(x = long, y = lat,
+                          group = group)) + 
+  geom_polygon(aes(fill = Governor), color = "darkgrey", linewidth = 0.2) + 
+  labs(fill = "Governor") +
+  coord_map() + 
+  theme_void() +  
+  scale_fill_manual(values = c("blue", "red")) #<1>
+```
+
+1. You can change the fill scale for different color schemes.
+
+
+### Multiple maps!  
+
+You can still use data viz tools from Data Science 1 (like facetting) to create things like time trends in maps:
+
+```{r}
+#| message: false
+#| warning: false
+
+library(lubridate)
+weekly_vacc <- vaccines |>
+  mutate(State = str_to_lower(State)) |>
+  mutate(State = str_replace(State, " state", ""),
+         week = week(Date)) |>
+  group_by(week, State) |>
+  summarize(date = first(Date),
+            mean_daily_vacc = mean(daily_vaccinated/est_population*1000)) |>
+  right_join(us_states, by =c("State" = "region")) |>
+  rename(region = State)
+
+weekly_vacc |>
+  filter(week > 2, week < 11) |>
+  ggplot(mapping = aes(x = long, y = lat,
+                          group = group)) + 
+  geom_polygon(aes(fill = mean_daily_vacc), color = "darkgrey", 
+               linewidth = 0.1) + 
+  labs(fill = "Weekly Average Daily Vaccinations per 1000") +
+  coord_map() + 
+  theme_void() + 
+  scale_fill_viridis() + 
+  facet_wrap(~date) + 
+  theme(legend.position = "bottom") 
+```
+
+
+### Other cool state maps
+
+#### statebin (square representation of states)
+
+```{r}
+#| message: false
+#| warning: false
+
+library(statebins) # may need to install
+
+vacc_mar13 |>
+  mutate(State = str_to_title(State)) |>
+  statebins(state_col = "State",
+            value_col = "people_vaccinated_per100") + 
+  theme_statebins() + #<1>
+  labs(fill = "People Vaccinated per 100")
+```
+
+1. One nice layout. You can customize with usual ggplot themes.
+
+
+I used [this example](https://livefreeordichotomize.com/2021/04/07/nytimes-map-how-to/) to create the code above.  The original graph is located [here](https://www.nytimes.com/interactive/2021/04/06/us/variants-cases-spread.html).
+
+
+### Interactive point maps with leaflet
+
+To add even more power and value to your plots, we can add interactivity.  For now, we will use the `leaflet` package, but later in the course we will learn even more powerful and flexible approaches for creating interactive plots and webpages.  
+
+For instance, here is a really simple plot with a pop-up window:
+
+```{r}
+library(leaflet)
+
+leaflet() |> 
+  addTiles() |>   #<1>
+  setView(-93.1832, 44.4597, zoom = 17) |>   #<2>
+  addPopups(-93.1832, 44.4597, 'Here is the <b>Regents Hall of Mathematical Sciences</b>, home of the Statistics and Data Science program at St. Olaf College')   #<3>
+```
+
+1. addTiles() uses OpenStreetMap, an awesome open-source mapping resource, as the default tile layer (background map)
+2. setView() centers the map at a specific latitude and longitude, then zoom controls how much of the surrounding area is shown
+3. add a popup message (with html formatting) that can be clicked on or off
+
+
+Leaflet is not part of the tidyverse, but the structure of its code is pretty similar and it also plays well with piping.
+
+Let's try pop-up messages with a data set containing Airbnb listings in the Boston area:
+
+```{r}
+#| message: false
+#| include: false
+
+#airbnb.df <- read_csv("https://raw.githubusercontent.com/proback/264_fall_2024/main/Data/airbnbData.csv") 
+airbnb.df <- read_csv("https://proback.github.io/264_fall_2024/Data/airbnbData.csv") 
+```
+
+```{r}
+leaflet() |>
+    addTiles() |>
+    setView(lng = mean(airbnb.df$Long), lat = mean(airbnb.df$Lat), 
+            zoom = 13) |> 
+    addCircleMarkers(data = airbnb.df,
+        lat = ~ Lat, 
+        lng = ~ Long, 
+        popup = ~ AboutListing, 
+        radius = ~ S_Accomodates,  
+        # These last options describe how the circles look
+        weight = 2,
+        color = "red", 
+        fillColor = "yellow")
+```
+
+
+### Interactive choropleth maps with leaflet
+
+
+#### A preview to shapefiles and the sf package
+
+```{r}
+#| message: false
+
+library(sf) #<1>
+states <- read_sf("https://rstudio.github.io/leaflet/json/us-states.geojson")  #<2>
+class(states) #<3>
+states
+```
+
+1. `sf` stands for "simple features"
+2. From https://leafletjs.com/examples/choropleth/us-states.js
+3. Note that `states` has class `sf` in addition to the usual `tbl` and `df`
+
+First we'll start with a static plot using a simple features object and geom_sf():
+
+```{r}
+# Create density bins as on the webpage
+state_plotting_sf <- states |>
+  mutate(density_intervals = cut(density, n = 8,
+          breaks = c(0, 10, 20, 50, 100, 200, 500, 1000, Inf))) |>
+  filter(!(name %in% c("Alaska", "Hawaii", "Puerto Rico")))
+
+ggplot(data = state_plotting_sf) + 
+  geom_sf(aes(fill = density_intervals), colour = "white", linetype = 2) + 
+#  geom_sf_label(aes(label = density)) +   # labels too busy here
+  theme_void() +  
+  scale_fill_brewer(palette = "YlOrRd") 
+```
+
+Now let's use `leaflet` to create an interactive plot!
+
+```{r}
+#| warning: false
+
+# Create our own category bins for population densities
+#   and assign the yellow-orange-red color palette
+bins <- c(0, 10, 20, 50, 100, 200, 500, 1000, Inf)
+pal <- colorBin("YlOrRd", domain = states$density, bins = bins)
+
+# Create labels that pop up when we hover over a state.  The labels must
+#   be part of a list where each entry is tagged as HTML code.
+library(htmltools)
+library(glue)
+
+states <- states |>
+  mutate(labels = str_c(name, ": ", density, " people / sq mile"))
+
+# If want more HTML formatting, use these lines instead of those above:
+#states <- states |>
+#  mutate(labels = glue("<strong>{name}</strong><br/>{density} people / #mi<sup>2</sup>"))
+
+labels <- lapply(states$labels, HTML)
+
+leaflet(states) %>%
+  setView(-96, 37.8, 4) %>%
+  addTiles() %>%
+  addPolygons(
+    fillColor = ~pal(density),
+    weight = 2,
+    opacity = 1,
+    color = "white",
+    dashArray = "3",
+    fillOpacity = 0.7,
+    highlightOptions = highlightOptions(
+      weight = 5,
+      color = "#666",
+      dashArray = "",
+      fillOpacity = 0.7,
+      bringToFront = TRUE),
+    label = labels,
+    labelOptions = labelOptions(
+      style = list("font-weight" = "normal", padding = "3px 8px"),
+      textsize = "15px",
+      direction = "auto")) %>%
+  addLegend(pal = pal, values = ~density, opacity = 0.7, title = NULL,
+    position = "bottomright")
+```
+

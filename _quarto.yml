@@ -8,13 +8,12 @@ website:
     left:
       - href: index.qmd
         text: Home
-      - about.qmd
+      - courses.qmd
+      - 02_maps.qmd
 
 format:
   html:
     theme: cosmo
     css: styles.css
     toc: true
-
-editor: visual
-
+    page-layout: full

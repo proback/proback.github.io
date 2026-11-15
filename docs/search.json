@@ -1,17 +1,115 @@
 [
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Paul Roback",
+    "objectID": "rtd_example.html#section",
+    "href": "rtd_example.html#section",
+    "title": "R Tip of the Day Example",
     "section": "",
-    "text": "Professor of Statistics and Data Science  MSCS Department @ St. Olaf College\n\n\nPhD in Statistics 1998 | Colorado State University\nMS in Statistics 1991 | Iowa State University\nBA in Math and Economics with Statistics concentration 1989 | St. Olaf College"
+    "text": "An intro to gganimate"
   },
   {
-    "objectID": "index.html#paul-roback",
-    "href": "index.html#paul-roback",
-    "title": "Paul Roback",
+    "objectID": "rtd_example.html#section-1",
+    "href": "rtd_example.html#section-1",
+    "title": "R Tip of the Day Example",
     "section": "",
-    "text": "Professor of Statistics and Data Science  MSCS Department @ St. Olaf College\n\n\nPhD in Statistics 1998 | Colorado State University\nMS in Statistics 1991 | Iowa State University\nBA in Math and Economics with Statistics concentration 1989 | St. Olaf College"
+    "text": "An intro to gganimate"
+  },
+  {
+    "objectID": "rtd_example.html#code-with-no-animation",
+    "href": "rtd_example.html#code-with-no-animation",
+    "title": "R Tip of the Day Example",
+    "section": "Code with no animation",
+    "text": "Code with no animation\ngapminder |&gt;\n  ggplot(aes(x = gdpPercap, y = lifeExp, size = pop, color = country)) +\n  geom_point(alpha = 0.7, show.legend = FALSE) +\n  scale_colour_manual(values = country_colors) +\n  scale_size(range = c(2, 12)) +\n  scale_x_log10() +\n  facet_wrap(~ continent) +\n  labs(\n    x = \"GDP per capita\",\n    y = \"life expectancy\"\n  )"
+  },
+  {
+    "objectID": "rtd_example.html#code-with-animation",
+    "href": "rtd_example.html#code-with-animation",
+    "title": "R Tip of the Day Example",
+    "section": "Code with animation",
+    "text": "Code with animation\ngapminder |&gt;\n  ggplot(aes(x = gdpPercap, y = lifeExp, size = pop, color = country)) +\n  geom_point(alpha = 0.7, show.legend = FALSE) +\n  scale_colour_manual(values = country_colors) +\n  scale_size(range = c(2, 12)) +\n  scale_x_log10() +\n  facet_wrap(~ continent) +\n  transition_time(year) +\n  ease_aes('linear') +\n  labs(\n    title = \"Year: {frame_time}\",\n    x = \"GDP per capita\",\n    y = \"life expectancy\"\n  )\n\nLearn more: Code Animations"
+  },
+  {
+    "objectID": "rtd_example.html#line-highlighting",
+    "href": "rtd_example.html#line-highlighting",
+    "title": "R Tip of the Day Example",
+    "section": "Line Highlighting",
+    "text": "Line Highlighting\n\nIncrementally see what we just added\n\ngapminder |&gt;\n  ggplot(aes(x = gdpPercap, y = lifeExp, size = pop, color = country)) +\n  geom_point(alpha = 0.7, show.legend = FALSE) +\n  scale_colour_manual(values = country_colors) +\n  scale_size(range = c(2, 12)) +\n  scale_x_log10() +\n  facet_wrap(~ continent) +\n  transition_time(year) +\n  ease_aes('linear') +\n  labs(\n    title = \"Year: {frame_time}\",\n    x = \"GDP per capita\",\n    y = \"life expectancy\"\n  )\n\nLearn more: Line Highlighting"
+  },
+  {
+    "objectID": "rtd_example.html#executable-code",
+    "href": "rtd_example.html#executable-code",
+    "title": "R Tip of the Day Example",
+    "section": "Executable Code",
+    "text": "Executable Code\n\nNow let us run the code and show the output in our presentation\n\n\n\nLearn more: Executable Code"
+  },
+  {
+    "objectID": "rtd_example.html#code-with-no-animation-example-2",
+    "href": "rtd_example.html#code-with-no-animation-example-2",
+    "title": "R Tip of the Day Example",
+    "section": "Code with no animation: Example 2",
+    "text": "Code with no animation: Example 2\ngapminder07 &lt;- filter(gapminder, year == 2007)\ngapminder07 |&gt;\n  ggplot(aes(x = lifeExp, y = continent, fill = continent)) +\n  geom_density_ridges(show.legend = FALSE, alpha = 0.5) +\n  labs(\n    title = \"Life Expectancy by Continent\",\n    subtitle = \"Year: 2007\",\n    x = \"Life Expectancy\",\n    y = \"Continent\"\n  )"
+  },
+  {
+    "objectID": "rtd_example.html#code-with-animation-example-2",
+    "href": "rtd_example.html#code-with-animation-example-2",
+    "title": "R Tip of the Day Example",
+    "section": "Code with animation: Example 2",
+    "text": "Code with animation: Example 2\ngapminder |&gt;\n  ggplot(aes(x = lifeExp, y = continent, fill = continent)) +\n  geom_density_ridges(show.legend = FALSE, alpha = 0.5) +\n  labs(\n    title = \"Life Expectancy by Continent\",\n    subtitle = \"Year: {frame_time}\",\n    x = \"Life Expectancy\",\n    y = \"Continent\"\n  ) +\n  transition_time(year) +\n  ease_aes(\"linear\")\n\nLearn more: Code Animations"
+  },
+  {
+    "objectID": "rtd_example.html#line-highlighting-1",
+    "href": "rtd_example.html#line-highlighting-1",
+    "title": "R Tip of the Day Example",
+    "section": "Line Highlighting",
+    "text": "Line Highlighting\n\nIncrementally see what we just added\n\ngapminder |&gt;\n  ggplot(aes(x = lifeExp, y = continent, fill = continent)) +\n  geom_density_ridges(show.legend = FALSE, alpha = 0.5) +\n  labs(\n    title = \"Life Expectancy by Continent\",\n    subtitle = \"Year: {frame_time}\",\n    x = \"Life Expectancy\",\n    y = \"Continent\"\n  ) +\n  transition_time(year) +\n  ease_aes(\"linear\")\n\nLearn more: Line Highlighting"
+  },
+  {
+    "objectID": "rtd_example.html#executable-code-1",
+    "href": "rtd_example.html#executable-code-1",
+    "title": "R Tip of the Day Example",
+    "section": "Executable Code",
+    "text": "Executable Code\n\nNow let us run the code and show the output in our presentation\n\n\n\nLearn more: Executable Code"
+  },
+  {
+    "objectID": "rtd_example.html#heres-more-executable-code-example-3",
+    "href": "rtd_example.html#heres-more-executable-code-example-3",
+    "title": "R Tip of the Day Example",
+    "section": "Here’s more executable code: Example 3",
+    "text": "Here’s more executable code: Example 3"
+  },
+  {
+    "objectID": "rtd_example.html#heres-more-executable-code-example-4",
+    "href": "rtd_example.html#heres-more-executable-code-example-4",
+    "title": "R Tip of the Day Example",
+    "section": "Here’s more executable code: Example 4",
+    "text": "Here’s more executable code: Example 4"
+  },
+  {
+    "objectID": "rtd_example.html#heres-more-executable-code-example-5",
+    "href": "rtd_example.html#heres-more-executable-code-example-5",
+    "title": "R Tip of the Day Example",
+    "section": "Here’s more executable code: Example 5",
+    "text": "Here’s more executable code: Example 5"
+  },
+  {
+    "objectID": "rtd_example.html#incremental-lists",
+    "href": "rtd_example.html#incremental-lists",
+    "title": "R Tip of the Day Example",
+    "section": "Incremental Lists",
+    "text": "Incremental Lists\nLists can optionally be displayed incrementally:\n\nTransitions: between years, categories, etc.\n\ntransition_time(), transition_states(), transition_reveal()\n\n\n\n\nViews: axes can shift with changing data\n\nview_follow()\n\n\n\n\n\nShadows: have a trace or memory of previous data\n\nshadow_wake(), shadow_mark()\n\n\n\n\nLearn more: Incremental Lists"
+  },
+  {
+    "objectID": "rtd_example.html#preview-links",
+    "href": "rtd_example.html#preview-links",
+    "title": "R Tip of the Day Example",
+    "section": "Preview Links",
+    "text": "Preview Links\nThanks to Jenna Graff of MSCS 264 in Spring 2024 for putting together the original powerpoint presentation on gganimate. Here’s a link with even more information:\n\nThe gganimate package\n\n\nLearn more: Preview Links"
+  },
+  {
+    "objectID": "embed_shiny.html",
+    "href": "embed_shiny.html",
+    "title": "Embed Shiny app",
+    "section": "",
+    "text": "Getting a shiny app or dashboard onto a quarto webpage is no small feat but it is possible. The issues lies in the fact that we need a dedicated server to run the app, which our GitHub hosted webpage doesn’t easily allow. Using the Shinylive package may provide one solution, but I haven’t had the chance to try that one yet and it seems to require the ui & server approach to shiny apps we discussed in class.\nAn alternative solution that also works for Flexdashboards is to publish your app on a dedicated server, then use HTML code to embed it in a regular .qmd file that renders to HTML.\nThis is a regular qmd with the line added below to show the app which was originally hosted through shinyapps.io and has been migrated to Posit Connect Cloud, the new home for hosting R products. You may sign up for a free account and have 5 live applications and unlimited documents at any time, with a limit of 4 GB of memory and 20 monthly usage credits (plenty for a project you just want to show off on a CV, but not enough for something that is constantly being used). Unfortunately, the RSConnect server that St. Olaf runs will not allow you to embed an app, so publishing through the school won’t work. There are a few moving parts to this approach, but it seems to work pretty well.\n&lt;iframe src=\"https://proback-profr-shiny-flexdashboard.share.connect.posit.cloud/\" width=\"90%\" height=\"90%\"&gt;&lt;/iframe&gt;"
   },
   {
     "objectID": "02_maps.html",
@@ -25,6 +123,20 @@
     "href": "courses.html",
     "title": "Courses",
     "section": "",
-    "text": "Fall 2024\n\nSDS 264: Data Science 2 course website\nSDS 172: Statistics 1"
+    "text": "Fall 2026\n\nSDS 264: Data Science 2 course website\nSDS 316: Advanced Statistical Modeling\nSDS 389: SDS Research Methods, aka the Center for Interdisciplinary Research"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Paul Roback",
+    "section": "",
+    "text": "Professor of Statistics and Data Science  MSCS Department @ St. Olaf College\n\n\nPhD in Statistics 1998 | Colorado State University\nMS in Statistics 1991 | Iowa State University\nBA in Math and Economics with Statistics concentration 1989 | St. Olaf College"
+  },
+  {
+    "objectID": "index.html#paul-roback",
+    "href": "index.html#paul-roback",
+    "title": "Paul Roback",
+    "section": "",
+    "text": "Professor of Statistics and Data Science  MSCS Department @ St. Olaf College\n\n\nPhD in Statistics 1998 | Colorado State University\nMS in Statistics 1991 | Iowa State University\nBA in Math and Economics with Statistics concentration 1989 | St. Olaf College"
   }
 ]

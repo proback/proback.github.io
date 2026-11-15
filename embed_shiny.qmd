@@ -1,0 +1,15 @@
+---
+title: "Embed Shiny app"
+---
+
+Getting a shiny app or dashboard onto a quarto webpage is no small feat but it is possible. The issues lies in the fact that we need a dedicated server to run the app, which our GitHub hosted webpage doesn't easily allow. Using the [**Shinylive** package](https://posit-dev.github.io/r-shinylive/) may provide one solution, but I haven't had the chance to try that one yet and it seems to require the `ui` & `server` approach to shiny apps we discussed in class.
+
+An alternative solution that also works for Flexdashboards is to publish your app on a dedicated server, then use HTML code to embed it in a regular .qmd file that renders to HTML.
+
+This is a regular qmd with the line added below to show the app which was originally hosted through [shinyapps.io](www.shinyapps.io) and has been migrated to [Posit Connect Cloud](connect.posit.cloud), the new home for hosting R products. You may sign up for a free account and have 5 live applications and unlimited documents at any time, with a limit of 4 GB of memory and 20 monthly usage credits (plenty for a project you just want to show off on a CV, but not enough for something that is constantly being used). Unfortunately, the RSConnect server that St. Olaf runs will not allow you to embed an app, so publishing through the school won't work. There are a few moving parts to this approach, but it seems to work pretty well.
+
+```
+<iframe src="https://proback-profr-shiny-flexdashboard.share.connect.posit.cloud/" width="90%" height="90%"></iframe>
+```
+
+<iframe src="https://proback-profr-shiny-flexdashboard.share.connect.posit.cloud/" width="90%" height="90%"></iframe>
